@@ -1,4 +1,5 @@
 <resources>
     <string name="app_name">Marvel</string>
     <string name="loading">Cargando...</string>
+    <string name="no_characters">No characters at moment</string>
 </resources>

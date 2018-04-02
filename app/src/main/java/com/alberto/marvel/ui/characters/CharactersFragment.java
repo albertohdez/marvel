@@ -8,6 +8,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import com.alberto.marvel.R;
 import com.alberto.marvel.common.model.response.CharactersResponse;
@@ -25,6 +26,9 @@ public class CharactersFragment extends Fragment implements CharactersAdapter.On
 
     @BindView(R.id.rvCharacters)
     RecyclerView rvCharacters;
+
+    @BindView(R.id.tvEmpty)
+    TextView tvEmpty;
 
     public static CharactersFragment newInstance(CharactersResponse charactersResponse) {
         CharactersFragment fragment = new CharactersFragment();
@@ -49,11 +53,14 @@ public class CharactersFragment extends Fragment implements CharactersAdapter.On
 
         if (charactersResponse != null && charactersResponse.getData() != null && charactersResponse.getData().getResults() != null
                 && !charactersResponse.getData().getResults().isEmpty()) {
+            tvEmpty.setVisibility(View.GONE);
+            rvCharacters.setVisibility(View.VISIBLE);
+
             createCharactersRecyclerView(charactersResponse.getData().getResults());
         } else {
-            //TODO Empty view
+            rvCharacters.setVisibility(View.GONE);
+            tvEmpty.setVisibility(View.VISIBLE);
         }
-
     }
 
     private void createCharactersRecyclerView(List<ResultResponse> results) {

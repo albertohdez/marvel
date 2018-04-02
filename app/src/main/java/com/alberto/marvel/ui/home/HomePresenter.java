@@ -1,12 +1,9 @@
 package com.alberto.marvel.ui.home;
 
 import com.alberto.marvel.common.model.response.CharactersResponse;
-import com.alberto.marvel.common.model.response.ResultResponse;
 import com.alberto.marvel.common.utils.Utils;
 import com.alberto.marvel.common.view.presenter.BasePresenter;
 import com.alberto.marvel.service.AppService;
-
-import java.util.List;
 
 import rx.Subscriber;
 import rx.android.schedulers.AndroidSchedulers;

@@ -29,16 +29,17 @@ public class HomeActivity extends BaseActivity implements HomeMvpView {
     @Override
     protected void onResume() {
         super.onResume();
+        showProgressDialog();
         homePresenter.getAllCharacters();
     }
 
     @Override
     public void getAllCharactersSuccess(List<ResultResponse> charactersResult) {
-
+        dismissProgressDialog();
     }
 
     @Override
     public void getAllCharactersError() {
-
+        dismissProgressDialog();
     }
 }

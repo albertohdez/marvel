@@ -38,8 +38,7 @@ public class HomePresenter extends BasePresenter<HomeMvpView> {
 
                     @Override
                     public void onNext(CharactersResponse charactersResponse) {
-                        List<ResultResponse> charactersResult = charactersResponse.getData().getResults();
-                        getMvpView().getAllCharactersSuccess(charactersResult);
+                        getMvpView().getAllCharactersSuccess(charactersResponse);
                     }
                 })
         );

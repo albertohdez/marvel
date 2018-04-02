@@ -1,11 +1,14 @@
 
 package com.alberto.marvel.common.model.response;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
-public class CharactersResponse {
+public class CharactersResponse implements Parcelable {
 
     @JsonProperty("code")
     private String code;
@@ -92,4 +95,45 @@ public class CharactersResponse {
         this.etag = etag;
     }
 
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(this.code);
+        dest.writeString(this.status);
+        dest.writeString(this.copyright);
+        dest.writeString(this.attributionText);
+        dest.writeString(this.attributionHTML);
+        dest.writeParcelable(this.data, flags);
+        dest.writeString(this.etag);
+    }
+
+    public CharactersResponse() {
+    }
+
+    protected CharactersResponse(Parcel in) {
+        this.code = in.readString();
+        this.status = in.readString();
+        this.copyright = in.readString();
+        this.attributionText = in.readString();
+        this.attributionHTML = in.readString();
+        this.data = in.readParcelable(DataResponse.class.getClassLoader());
+        this.etag = in.readString();
+    }
+
+    public static final Parcelable.Creator<CharactersResponse> CREATOR = new Parcelable.Creator<CharactersResponse>() {
+        @Override
+        public CharactersResponse createFromParcel(Parcel source) {
+            return new CharactersResponse(source);
+        }
+
+        @Override
+        public CharactersResponse[] newArray(int size) {
+            return new CharactersResponse[size];
+        }
+    };
 }

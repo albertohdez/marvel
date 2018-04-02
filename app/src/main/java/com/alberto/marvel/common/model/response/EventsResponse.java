@@ -1,14 +1,18 @@
 
 package com.alberto.marvel.common.model.response;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import com.alberto.marvel.common.model.Event;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
-public class EventsResponse {
+public class EventsResponse implements Parcelable {
 
     @JsonProperty("available")
     private String available;
@@ -59,4 +63,39 @@ public class EventsResponse {
         this.items = items;
     }
 
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(this.available);
+        dest.writeString(this.returned);
+        dest.writeString(this.collectionURI);
+        dest.writeList(this.items);
+    }
+
+    public EventsResponse() {
+    }
+
+    protected EventsResponse(Parcel in) {
+        this.available = in.readString();
+        this.returned = in.readString();
+        this.collectionURI = in.readString();
+        this.items = new ArrayList<Event>();
+        in.readList(this.items, Event.class.getClassLoader());
+    }
+
+    public static final Parcelable.Creator<EventsResponse> CREATOR = new Parcelable.Creator<EventsResponse>() {
+        @Override
+        public EventsResponse createFromParcel(Parcel source) {
+            return new EventsResponse(source);
+        }
+
+        @Override
+        public EventsResponse[] newArray(int size) {
+            return new EventsResponse[size];
+        }
+    };
 }

@@ -1,15 +1,19 @@
 
 package com.alberto.marvel.common.model.response;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import com.alberto.marvel.common.model.Comic;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
-public class ComicsResponse {
+public class ComicsResponse implements Parcelable {
 
     @JsonProperty("available")
     private String available;
@@ -60,4 +64,39 @@ public class ComicsResponse {
         this.items = items;
     }
 
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(this.available);
+        dest.writeString(this.returned);
+        dest.writeString(this.collectionURI);
+        dest.writeList(this.items);
+    }
+
+    public ComicsResponse() {
+    }
+
+    protected ComicsResponse(Parcel in) {
+        this.available = in.readString();
+        this.returned = in.readString();
+        this.collectionURI = in.readString();
+        this.items = new ArrayList<Comic>();
+        in.readList(this.items, Comic.class.getClassLoader());
+    }
+
+    public static final Parcelable.Creator<ComicsResponse> CREATOR = new Parcelable.Creator<ComicsResponse>() {
+        @Override
+        public ComicsResponse createFromParcel(Parcel source) {
+            return new ComicsResponse(source);
+        }
+
+        @Override
+        public ComicsResponse[] newArray(int size) {
+            return new ComicsResponse[size];
+        }
+    };
 }

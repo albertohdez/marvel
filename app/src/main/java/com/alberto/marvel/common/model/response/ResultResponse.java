@@ -1,13 +1,17 @@
 
 package com.alberto.marvel.common.model.response;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
-public class ResultResponse {
+public class ResultResponse implements Parcelable {
 
     @JsonProperty("id")
     private String id;
@@ -142,4 +146,57 @@ public class ResultResponse {
         this.series = series;
     }
 
+    public String getImageUrl() {
+        return thumbnail.buildCompleteImagePath();
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(this.id);
+        dest.writeString(this.name);
+        dest.writeString(this.description);
+        dest.writeString(this.modified);
+        dest.writeString(this.resourceURI);
+        dest.writeList(this.urls);
+        dest.writeParcelable(this.thumbnail, flags);
+        dest.writeParcelable(this.comics, flags);
+        dest.writeParcelable(this.stories, flags);
+        dest.writeParcelable(this.events, flags);
+        dest.writeParcelable(this.series, flags);
+    }
+
+    public ResultResponse() {
+    }
+
+    protected ResultResponse(Parcel in) {
+        this.id = in.readString();
+        this.name = in.readString();
+        this.description = in.readString();
+        this.modified = in.readString();
+        this.resourceURI = in.readString();
+        this.urls = new ArrayList<UrlResponse>();
+        in.readList(this.urls, UrlResponse.class.getClassLoader());
+        this.thumbnail = in.readParcelable(ThumbnailResponse.class.getClassLoader());
+        this.comics = in.readParcelable(ComicsResponse.class.getClassLoader());
+        this.stories = in.readParcelable(StoriesResponse.class.getClassLoader());
+        this.events = in.readParcelable(EventsResponse.class.getClassLoader());
+        this.series = in.readParcelable(SeriesResponse.class.getClassLoader());
+    }
+
+    public static final Parcelable.Creator<ResultResponse> CREATOR = new Parcelable.Creator<ResultResponse>() {
+        @Override
+        public ResultResponse createFromParcel(Parcel source) {
+            return new ResultResponse(source);
+        }
+
+        @Override
+        public ResultResponse[] newArray(int size) {
+            return new ResultResponse[size];
+        }
+    };
 }

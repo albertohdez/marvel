@@ -3,7 +3,10 @@ package com.alberto.marvel.ui.home;
 import android.os.Bundle;
 
 import com.alberto.marvel.R;
+import com.alberto.marvel.common.model.response.ResultResponse;
 import com.alberto.marvel.common.view.activity.BaseActivity;
+
+import java.util.List;
 
 import javax.inject.Inject;
 
@@ -23,4 +26,19 @@ public class HomeActivity extends BaseActivity implements HomeMvpView {
         homePresenter.attachView(this);
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        homePresenter.getAllCharacters();
+    }
+
+    @Override
+    public void getAllCharactersSuccess(List<ResultResponse> charactersResult) {
+
+    }
+
+    @Override
+    public void getAllCharactersError() {
+
+    }
 }

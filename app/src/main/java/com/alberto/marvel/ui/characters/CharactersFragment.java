@@ -5,6 +5,7 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,7 +14,9 @@ import android.widget.TextView;
 import com.alberto.marvel.R;
 import com.alberto.marvel.common.model.response.CharactersResponse;
 import com.alberto.marvel.common.model.response.ResultResponse;
+import com.alberto.marvel.common.view.activity.BaseActivity;
 import com.alberto.marvel.ui.characters.adapter.CharactersAdapter;
+import com.alberto.marvel.ui.detail.CharacterDetailFragment;
 
 import java.util.List;
 
@@ -23,6 +26,9 @@ import butterknife.ButterKnife;
 public class CharactersFragment extends Fragment implements CharactersAdapter.OnItemClickListener {
     public static final String TAG = CharactersFragment.class.getCanonicalName();
     private static final String EXTRA_CHARACTERS_RESULT = "extra_characters_result";
+
+    @BindView(R.id.toolbar)
+    Toolbar toolbar;
 
     @BindView(R.id.rvCharacters)
     RecyclerView rvCharacters;
@@ -49,8 +55,11 @@ public class CharactersFragment extends Fragment implements CharactersAdapter.On
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        CharactersResponse charactersResponse = getArguments().getParcelable(EXTRA_CHARACTERS_RESULT);
 
+        ((BaseActivity) getActivity()).setSupportActionBar(toolbar);
+        toolbar.setTitle(getString(R.string.app_name));
+
+        CharactersResponse charactersResponse = getArguments().getParcelable(EXTRA_CHARACTERS_RESULT);
         if (charactersResponse != null && charactersResponse.getData() != null && charactersResponse.getData().getResults() != null
                 && !charactersResponse.getData().getResults().isEmpty()) {
             tvEmpty.setVisibility(View.GONE);
@@ -74,6 +83,8 @@ public class CharactersFragment extends Fragment implements CharactersAdapter.On
 
     @Override
     public void onItemClick(ResultResponse character) {
-        //TODO
+        CharacterDetailFragment characterDetailFragment = CharacterDetailFragment.newInstance(character);
+        getActivity().getSupportFragmentManager().beginTransaction().add(R.id.content, characterDetailFragment,
+                CharacterDetailFragment.TAG).addToBackStack("").commit();
     }
 }

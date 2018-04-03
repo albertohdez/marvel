@@ -4,10 +4,9 @@ package com.alberto.marvel.common.model.response;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import com.alberto.marvel.common.model.Comic;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
-
-import com.alberto.marvel.common.model.Comic;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -99,4 +98,12 @@ public class ComicsResponse implements Parcelable {
             return new ComicsResponse[size];
         }
     };
+
+    public List<String> getComicNames() {
+        List<String> comicNames = new ArrayList<>();
+        for (Comic item : items) {
+            comicNames.add(item.getName());
+        }
+        return comicNames;
+    }
 }

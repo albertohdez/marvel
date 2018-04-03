@@ -1,11 +1,13 @@
 package com.alberto.marvel.ui.home;
 
 import android.os.Bundle;
+import android.view.MenuItem;
 
 import com.alberto.marvel.R;
 import com.alberto.marvel.common.model.response.CharactersResponse;
 import com.alberto.marvel.common.view.activity.BaseActivity;
 import com.alberto.marvel.ui.characters.CharactersFragment;
+import com.alberto.marvel.ui.detail.CharacterDetailFragment;
 
 import javax.inject.Inject;
 
@@ -33,11 +35,31 @@ public class HomeActivity extends BaseActivity implements HomeMvpView {
     }
 
     @Override
+    public void onBackPressed() {
+        if (getSupportFragmentManager().findFragmentByTag(CharacterDetailFragment.TAG) != null) {
+            getSupportFragmentManager().popBackStack();
+        } else {
+            finish();
+        }
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                onBackPressed();
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+    }
+
+    @Override
     public void getAllCharactersSuccess(CharactersResponse charactersResponse) {
         dismissProgressDialog();
         CharactersFragment charactersFragment = CharactersFragment.newInstance(charactersResponse);
-        getSupportFragmentManager().beginTransaction().replace(R.id.content,charactersFragment,
-                CharactersFragment.TAG).commit();
+        getSupportFragmentManager().beginTransaction().replace(R.id.content, charactersFragment,
+                CharactersFragment.TAG).addToBackStack("").commit();
     }
 
     @Override

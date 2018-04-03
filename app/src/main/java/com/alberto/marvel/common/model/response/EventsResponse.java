@@ -98,4 +98,12 @@ public class EventsResponse implements Parcelable {
             return new EventsResponse[size];
         }
     };
+
+    public List<String> getEventNames() {
+        List<String> eventNames = new ArrayList<>();
+        for (Event item : items) {
+            eventNames.add(item.getName());
+        }
+        return eventNames;
+    }
 }

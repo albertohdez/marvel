@@ -98,4 +98,12 @@ public class StoriesResponse implements Parcelable {
             return new StoriesResponse[size];
         }
     };
+
+    public List<String> getStoryNames() {
+        List<String> storyNames = new ArrayList<>();
+        for (Story item : items) {
+            storyNames.add(item.getName());
+        }
+        return storyNames;
+    }
 }

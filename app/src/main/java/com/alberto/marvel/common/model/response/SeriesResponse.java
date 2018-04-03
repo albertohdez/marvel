@@ -98,4 +98,12 @@ public class SeriesResponse implements Parcelable {
             return new SeriesResponse[size];
         }
     };
+
+    public List<String> getSerieNames() {
+        List<String> serieNames = new ArrayList<>();
+        for (Serie item : items) {
+            serieNames.add(item.getName());
+        }
+        return serieNames;
+    }
 }

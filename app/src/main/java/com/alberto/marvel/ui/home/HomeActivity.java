@@ -1,5 +1,7 @@
 package com.alberto.marvel.ui.home;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.view.MenuItem;
 
@@ -65,5 +67,19 @@ public class HomeActivity extends BaseActivity implements HomeMvpView {
     @Override
     public void getAllCharactersError() {
         dismissProgressDialog();
+        showErrorDialog();
+    }
+
+    public void showErrorDialog() {
+        AlertDialog alertDialog = new AlertDialog.Builder(this).create();
+        alertDialog.setTitle(getString(R.string.alert));
+        alertDialog.setMessage(getString(R.string.dialog_message_error));
+        alertDialog.setButton(AlertDialog.BUTTON_NEUTRAL, getString(R.string.ok),
+                new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                    }
+                });
+        alertDialog.show();
     }
 }
